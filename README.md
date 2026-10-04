@@ -9,6 +9,59 @@ Local hosting for open-weight **decision models** on this Strix Halo box (Ryzen 
 
 This project was named `laya-host` until Rune was added.
 
+## Architecture
+
+```mermaid
+flowchart LR
+    clients["Clients<br/>jev-email-cascade · smoke.ps1 · curl"]
+
+    subgraph runtime["Runtime (offline, localhost only)"]
+        direction TB
+        env[".env<br/>ports · devices · quant"]
+        subgraph tasks["Windows scheduled tasks (start at logon)"]
+            layaTask["LayaServe<br/>serve.ps1 -Supervise"]
+            runeTask["RuneServe<br/>serve-rune.ps1 -Supervise"]
+        end
+        laya["laya-serve :8000<br/>.venv-rocm · torch ROCm"]
+        rune["llama-server :8001<br/>llama.cpp b11382 · Vulkan"]
+        gpu[("Radeon 8060S iGPU<br/>96 GB VGM")]
+        env -. config .-> tasks
+        layaTask -- "restarts on exit" --> laya
+        runeTask -- "restarts on exit" --> rune
+        laya --> gpu
+        rune --> gpu
+    end
+
+    subgraph disk["On disk (git-ignored)"]
+        hf[("state/hf<br/>Laya checkpoints<br/>Rune Q8_0 GGUF")]
+        vendor[("vendor/llama.cpp<br/>Vulkan + ROCm zips")]
+    end
+
+    subgraph setup["One-time setup (needs network)"]
+        scripts["setup-tls · setup-rocm · setup-llama<br/>fetch-weights · fetch-rune"]
+        tls["tls/<br/>CA bundle · local_tls · umbrella.py"]
+    end
+
+    internet["Hugging Face · GitHub · PyPI<br/>via Cisco Umbrella proxy"]
+
+    clients -- "POST /v1/systemone" --> laya
+    clients -- "POST /v1/systemone" --> rune
+    laya -. "loads weights" .-> hf
+    rune -. "loads GGUF" .-> hf
+    rune -. "binary" .-> vendor
+    scripts --> tls --> internet
+    scripts --> hf
+    scripts --> vendor
+```
+
+- **Clients** send the same request to either server. The protocol is Jev's `POST /v1/systemone`: a state plus typed questions in, typed answers with probabilities out.
+- **Scheduled tasks** keep the servers up. Each runs a small PowerShell supervisor, which restarts its server whenever it exits. `.env` decides ports, devices and which Rune quant to load.
+- **Two servers share the iGPU:**
+  - Laya runs through `laya-serve` on AMD's ROCm build of torch.
+  - Rune runs through llama.cpp's `llama-server` on Vulkan. That's the only llama.cpp build that sees this GPU.
+- **Everything at runtime is local.** Both servers bind to 127.0.0.1 and load weights from `state/hf` with `HF_HUB_OFFLINE=1`.
+- **Network is only needed for setup.** The setup scripts download weights, the ROCm torch wheels and the llama.cpp zips. They go through `tls/` because the corporate Cisco Umbrella proxy re-signs and redirects those downloads; see [Why it is shaped like this](#why-it-is-shaped-like-this).
+
 `laya-serve` routes:
 
 | route | purpose |
