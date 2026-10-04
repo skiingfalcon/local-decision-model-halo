@@ -78,7 +78,7 @@ Measured 2026-10-04 with `cascade run --backend laya|rune` and `scripts/bench_la
 
 - **Rune** matches Jev on category and is never more than one level off on priority, at $0. It costs about 8× the latency. The GPU is saturated processing each prompt (about 2,300 tokens per email), so `RUNE_PARALLEL=4` doesn't help (0.43 vs 0.48 emails/s).
 - **Laya** is fast but well short on accuracy for this taxonomy.
-- **Routing.** Both local models' confidences are softer than Jev's, so jev-email-cascade's routing thresholds, which were tuned for Jev, send most emails to review. They would need refitting per model.
+- **Routing.** jev-email-cascade's routing policy is conservative for every backend: it sends 70 of 74 Jev emails, 71 Rune emails and all 74 Laya emails to human review.
 
 ## Day to day
 
