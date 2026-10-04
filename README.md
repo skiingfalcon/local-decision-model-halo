@@ -11,6 +11,18 @@ This project was named `laya-host` until Rune was added.
 
 ## Architecture
 
+At runtime:
+
+```mermaid
+flowchart LR
+    client["Client"] -- "POST /v1/systemone" --> laya["Laya<br/>laya-serve :8000"]
+    client -- "POST /v1/systemone" --> rune["Rune<br/>llama-server :8001"]
+    laya --> gpu[("Radeon 8060S")]
+    rune --> gpu
+```
+
+All the moving parts, including setup:
+
 ```mermaid
 flowchart LR
     clients["Clients<br/>jev-email-cascade · smoke.ps1 · curl"]
