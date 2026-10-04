@@ -41,7 +41,7 @@ The document covers two scenarios:
 | source code | https://github.com/skiingfalcon/local-decision-model-halo (public, branch `main`) |
 | **service** | **Rune 26B-A4B v3** (Q8_0) on llama.cpp `llama-server` b11382 (Vulkan), **port 8001** |
 | service runner | Windows Scheduled Task **`RuneServe`**: starts at logon of `kghosh`, restarts the server if it stops |
-| endpoints | `GET /health` (no auth) · `POST /v1/systemone` (the API) · `GET /props` (model and build info) · `GET /metrics` (Prometheus, for [Datadog](#a7-monitoring-with-datadog)) |
+| endpoints | `GET /health` (no auth) · `POST /v1/systemone` (the API) · `GET /props` (model and build info) · `GET /metrics` (Prometheus, for [Datadog](#a7-monitoring-with-datadog-optional), optional) |
 | logs | `C:\Users\kghosh\projects\local-decision-model\state\logs\rune.log` |
 | optional extra | **Laya**, a smaller, faster but less accurate model on port 8000 (task `LayaServe`). Not needed for TrueFoundry; see [Optional: Laya](#optional-laya). |
 
@@ -276,14 +276,16 @@ setup and download scripts. To move it to a neutral folder and an IT-owned accou
 5. **Verify** with `.\scripts\smoke.ps1` (from `C:\local-decision-model`) and a request from
    another machine.
 6. **Optionally** delete the old folder once satisfied (or keep it as a backup), and update the
-   Datadog log path (A7) to `C:\local-decision-model\state\logs\rune.log`.
+   Datadog log path (A7, if you use Datadog) to `C:\local-decision-model\state\logs\rune.log`.
 
 `git pull` in the new folder still works for updates, since `.git` was copied. To re-run the
 download or setup scripts there, install Python 3.13 and `uv` for the account doing it
 ([B1](#b1-tools)) and run `uv sync` first. Laya is different: its Python environments must be
 rebuilt in the new folder (README, "Optional: Laya").
 
-### A7. Monitoring with Datadog
+### A7. Monitoring with Datadog (optional)
+
+> **Optional.** Skip this section until the organization is onboarded to Datadog. Nothing else depends on it: the service runs the same without an Agent, and Rune's `/metrics` page (on by default, behind the API key) just goes unread.
 
 Ready-made Agent configs are in the repo under
 [`monitoring\datadog\conf.d\`](../monitoring/datadog/conf.d). Together they cover four things:
