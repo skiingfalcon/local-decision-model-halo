@@ -1,0 +1,20 @@
+# Up/down check for the decision-model servers. /health needs no API key.
+# Copy to C:\ProgramData\Datadog\conf.d\http_check.d\conf.yaml, then restart the Agent.
+# 200 = model loaded and ready; 503 = still loading (about 20 s after a start).
+init_config:
+
+instances:
+  - name: rune-health
+    url: http://127.0.0.1:8001/health
+    timeout: 5
+    tags:
+      - service:rune
+      - app:local-decision-model
+
+  # Optional: only if Laya is set up (port 8000).
+  # - name: laya-health
+  #   url: http://127.0.0.1:8000/health
+  #   timeout: 5
+  #   tags:
+  #     - service:laya
+  #     - app:local-decision-model

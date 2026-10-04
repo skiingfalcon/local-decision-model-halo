@@ -1,0 +1,24 @@
+# Log collection for the decision-model servers. Requires `logs_enabled: true` in
+# C:\ProgramData\Datadog\datadog.yaml, and read access for the Agent's account (ddagentuser) to
+# the logs folder; see docs\IT-HANDOFF.md, "Monitoring with Datadog".
+# Copy to C:\ProgramData\Datadog\conf.d\local_decision_model.d\conf.yaml and set the paths to the
+# install folder, then restart the Agent.
+#
+# Lines worth alerting on:
+#   "ErrorDeviceLost"   the GPU driver lost the device. Both models stop answering; reboot.
+#   "exited ("          the supervisor restarted a crashed server.
+logs:
+  - type: file
+    path: C:\local-decision-model\state\logs\rune.log
+    service: rune
+    source: llama.cpp
+    tags:
+      - app:local-decision-model
+
+  # Optional: Laya
+  # - type: file
+  #   path: C:\local-decision-model\state\logs\laya.log
+  #   service: laya
+  #   source: python
+  #   tags:
+  #     - app:local-decision-model

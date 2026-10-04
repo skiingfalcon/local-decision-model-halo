@@ -1,0 +1,19 @@
+# Is the server process alive, and how much CPU/RAM does it use.
+# Copy to C:\ProgramData\Datadog\conf.d\process.d\conf.yaml, then restart the Agent.
+init_config:
+
+instances:
+  - name: rune-llama-server
+    search_string:
+      - llama-server.exe
+    tags:
+      - service:rune
+      - app:local-decision-model
+
+  # Optional: Laya runs as python.exe from .venv-rocm; match on its entry point.
+  # - name: laya-serve
+  #   search_string:
+  #     - laya-serve
+  #   tags:
+  #     - service:laya
+  #     - app:local-decision-model

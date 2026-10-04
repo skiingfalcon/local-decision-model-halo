@@ -1,0 +1,28 @@
+# AMD iGPU memory and load from Windows performance counters. Datadog's GPU integration targets
+# NVIDIA, so on this Radeon 8060S these counters are the way to see the GPU.
+# Needs Datadog Agent 7.33+. Copy to
+# C:\ProgramData\Datadog\conf.d\windows_performance_counters.d\conf.yaml, then restart the Agent.
+#
+# What to expect: with Rune Q8_0 loaded, dedicated usage is about 27 GB (about 33 GB with Laya
+# too) out of the 96 GB reserved for the GPU. The adapter appears as instances like
+# luid_0x..._phys_0; only one carries the load.
+init_config:
+
+instances:
+  - metrics:
+      GPU Adapter Memory:
+        name: gpu.adapter_memory
+        tag_name: adapter
+        counters:
+          - Dedicated Usage: dedicated_usage
+          - Shared Usage: shared_usage
+      GPU Engine:
+        name: gpu.engine
+        tag_name: engine
+        counters:
+          # One instance per process and engine; submit only the sum to keep cardinality low.
+          - Utilization Percentage:
+              name: utilization
+              aggregate: only
+    tags:
+      - app:local-decision-model

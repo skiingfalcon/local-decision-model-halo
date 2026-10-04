@@ -34,6 +34,9 @@ $argv = @(
     '--host', $env:RUNE_HOST, '--port', $env:RUNE_PORT
 )
 if ($env:RUNE_API_KEY) { $argv += @('--api-key', $env:RUNE_API_KEY) }
+# Prometheus-format /metrics (request, token and throughput counters) for Datadog's OpenMetrics
+# check. It sits behind the API key like every route except /health.
+if ($env:RUNE_METRICS -eq '1') { $argv += '--metrics' }
 $cmd = "`"$($server.FullName)`" $($argv -join ' ')"
 
 $delay = 10

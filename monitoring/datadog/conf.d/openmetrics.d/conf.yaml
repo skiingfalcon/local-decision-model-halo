@@ -1,0 +1,24 @@
+# llama-server's Prometheus metrics for Rune: tokens processed, requests in flight / queued,
+# prompt throughput. Needs RUNE_METRICS=1 in the project's .env (the default).
+# /metrics sits behind the API key: put the same value as RUNE_API_KEY below (remove the
+# headers block if no key is set).
+# Copy to C:\ProgramData\Datadog\conf.d\openmetrics.d\conf.yaml, then restart the Agent.
+#
+# Useful series (names as exposed; Datadog prefixes them with the namespace):
+#   llamacpp:prompt_tokens_total      counter  prompt tokens processed
+#   llamacpp:n_decode_total           counter  forward passes (one or more per request)
+#   llamacpp:prompt_tokens_seconds    gauge    prompt throughput, tokens/s
+#   llamacpp:requests_processing      gauge    requests running now (max = RUNE_PARALLEL)
+#   llamacpp:requests_deferred        gauge    requests waiting: alert if it stays > 0
+init_config:
+
+instances:
+  - openmetrics_endpoint: http://127.0.0.1:8001/metrics
+    namespace: rune
+    metrics:
+      - .*
+    headers:
+      Authorization: Bearer <RUNE_API_KEY>
+    tags:
+      - service:rune
+      - app:local-decision-model
