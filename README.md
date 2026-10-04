@@ -1,5 +1,7 @@
 # local-decision-model
 
+> **IT team:** start with [docs/IT-HANDOFF.md](docs/IT-HANDOFF.md). It covers running this machine as delivered, rebuilding it from scratch, and connecting it to TrueFoundry.
+
 ## Purpose
 
 This project runs a **decision model** on our own Strix Halo box (Ryzen AI MAX+ 395 / Radeon 8060S, Windows 11). A decision model reads some text, such as an email, and answers a fixed set of questions about it. For example: "which team owns this?", "how urgent is it?", "is the sender waiting for a reply?". It picks from the answers you allow and says how sure it is. It doesn't write prose.
