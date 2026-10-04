@@ -1,13 +1,13 @@
 # Registers (or replaces) a per-user Scheduled Task that runs a model's server under its supervisor
-# at logon: -Model laya -> "LayaServe" (serve.ps1 -Supervise, port LAYA_PORT);
-#           -Model rune -> "RuneServe" (serve-rune.ps1 -Supervise, port RUNE_PORT).
+# at logon: -Model rune (default) -> "RuneServe" (serve-rune.ps1 -Supervise, port RUNE_PORT);
+#           -Model laya (optional) -> "LayaServe" (serve-laya.ps1 -Supervise, port LAYA_PORT).
 # The supervisor restarts the server whenever it exits; Task Scheduler's own restart settings only
 # cover a failed start of the supervisor itself. -Remove unregisters; scripts\stop.ps1 stops.
-param([ValidateSet('laya', 'rune')][string]$Model = 'laya', [switch]$Remove, [switch]$StartNow)
+param([ValidateSet('laya', 'rune')][string]$Model = 'rune', [switch]$Remove, [switch]$StartNow)
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $spec = @{
-    laya = @{ name = 'LayaServe'; script = 'serve.ps1'; what = 'Laya decision model (laya-serve)' }
+    laya = @{ name = 'LayaServe'; script = 'serve-laya.ps1'; what = 'Laya decision model (laya-serve)' }
     rune = @{ name = 'RuneServe'; script = 'serve-rune.ps1'; what = 'Rune 26B-A4B v3 decision model (llama-server)' }
 }[$Model]
 

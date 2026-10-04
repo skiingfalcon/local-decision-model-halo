@@ -4,7 +4,7 @@ Builds the same Router that laya-serve builds (same LAYA_* env, so the same revi
 and preloads it. Everything laya touches lands in the cache, including tokenizer and encoder
 files. After this, the server runs with HF_HUB_OFFLINE=1 and never needs the proxy.
 
-    uv run python scripts/fetch_weights.py        (env loaded by scripts/fetch-weights.ps1)
+    uv run python scripts/fetch_laya.py        (env loaded by scripts/fetch-laya.ps1)
 """
 
 from __future__ import annotations

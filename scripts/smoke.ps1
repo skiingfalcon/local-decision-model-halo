@@ -1,6 +1,6 @@
 # Health check plus one typed-decision request (choice + score + noul) against a running server.
-#   -Server laya (default) | rune;  -Model picks a Laya checkpoint (english / typed-decisions / multilingual)
-param([ValidateSet('laya', 'rune')][string]$Server = 'laya', [string]$Model = '')
+#   -Server rune (default) | laya;  -Model picks a Laya checkpoint (english / typed-decisions / multilingual)
+param([ValidateSet('laya', 'rune')][string]$Server = 'rune', [string]$Model = '')
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot '_env.ps1')
 $base = Get-ServerBaseUrl $Server

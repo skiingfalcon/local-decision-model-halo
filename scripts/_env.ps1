@@ -1,7 +1,7 @@
 # Dot-sourced helper: loads .env (falling back to .env.example) into the process environment
 # and puts uv on PATH. Relative values under state\ are resolved against the project root.
 # Variables already set in the process take precedence, so e.g. `$env:LAYA_DEVICE='cuda'`
-# before calling serve.ps1 overrides .env for that launch.
+# before calling serve-laya.ps1 overrides .env for that launch.
 $script:ProjectRoot = Split-Path $PSScriptRoot -Parent
 
 $envFile = Join-Path $ProjectRoot '.env'

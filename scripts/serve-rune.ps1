@@ -1,6 +1,6 @@
 # Starts llama-server for Rune 26B-A4B v3 (System One decision endpoint /v1/systemone) with .env
 # applied; output is appended to state\logs\rune.log.
-#   -Supervise   restart whenever it exits (same backoff as serve.ps1); used by the RuneServe task.
+#   -Supervise   restart whenever it exits (same backoff as serve-laya.ps1); used by the RuneServe task.
 #
 # The GGUF's own metadata (gemma4.decision.type=openjev, temperature 2 per question type, the
 # surogate prompt template) makes llama-server serve decisions; nothing here configures them.

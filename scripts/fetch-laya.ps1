@@ -2,5 +2,5 @@
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot '_env.ps1')
 Set-Location $ProjectRoot
-uv run --no-sync python scripts\fetch_weights.py
+uv run --no-sync python scripts\fetch_laya.py
 exit $LASTEXITCODE

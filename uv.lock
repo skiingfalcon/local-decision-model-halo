@@ -295,22 +295,31 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "certifi" },
+    { name = "httpx" },
+    { name = "huggingface-hub" },
+    { name = "psutil" },
+]
+
+[package.optional-dependencies]
+laya = [
     { name = "laya", extra = ["serve"] },
     { name = "onnx" },
     { name = "onnxruntime-directml" },
     { name = "onnxscript" },
-    { name = "psutil" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "certifi" },
-    { name = "laya", extras = ["serve"], specifier = "==0.3.26" },
-    { name = "onnx" },
-    { name = "onnxruntime-directml" },
-    { name = "onnxscript" },
+    { name = "httpx" },
+    { name = "huggingface-hub", specifier = ">=1.0" },
+    { name = "laya", extras = ["serve"], marker = "extra == 'laya'", specifier = "==0.3.26" },
+    { name = "onnx", marker = "extra == 'laya'" },
+    { name = "onnxruntime-directml", marker = "extra == 'laya'" },
+    { name = "onnxscript", marker = "extra == 'laya'" },
     { name = "psutil" },
 ]
+provides-extras = ["laya"]
 
 [[package]]
 name = "markdown-it-py"

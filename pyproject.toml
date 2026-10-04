@@ -1,17 +1,27 @@
 [project]
 name = "local-decision-model"
 version = "0.1.0"
-description = "Local hosting for decision models (Laya via laya-serve, Rune via llama-server) on the Strix Halo box"
+description = "Local hosting for decision models on the Strix Halo box: Rune via llama-server (default), Laya via laya-serve (optional)"
 requires-python = "==3.13.*"
+# The default install covers Rune: llama-server is a prebuilt binary, so Python is only needed
+# for the proxy-aware downloads (scripts/fetch_rune.py, scripts/download.py) and the TLS hook.
 dependencies = [
+    "huggingface_hub>=1.0",
+    "httpx",
+    "certifi",
+    "psutil",
+]
+
+[project.optional-dependencies]
+# Optional Laya: `uv sync --extra laya` for its weight fetch and the CPU fallback. The GPU server
+# runs from .venv-rocm (scripts/setup-rocm.ps1), which installs laya itself.
+laya = [
     "laya[serve]==0.3.26",
     # Instead of laya's `onnx` extra, which pulls CPU-only `onnxruntime`. Both packages
     # install the same `onnxruntime` module, and only the DirectML build reaches the iGPU.
     "onnx",
     "onnxscript",
     "onnxruntime-directml",
-    "certifi",
-    "psutil",
 ]
 
 [tool.uv]
