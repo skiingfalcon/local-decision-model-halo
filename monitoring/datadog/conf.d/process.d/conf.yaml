@@ -10,10 +10,12 @@ instances:
       - service:rune
       - app:local-decision-model
 
-  # Optional: Laya runs as python.exe from .venv-rocm; match on its entry point.
-  # - name: laya-serve
-  #   search_string:
-  #     - laya-serve
-  #   tags:
-  #     - service:laya
-  #     - app:local-decision-model
+  # Laya runs as python.exe from .venv-rocm; match its entry point on the command line.
+  # Delete this block if you remove Laya.
+  - name: laya-serve
+    search_string:
+      - laya-serve
+    exact_match: false
+    tags:
+      - service:laya
+      - app:local-decision-model

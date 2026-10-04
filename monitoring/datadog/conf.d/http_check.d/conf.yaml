@@ -11,10 +11,10 @@ instances:
       - service:rune
       - app:local-decision-model
 
-  # Optional: only if Laya is set up (port 8000).
-  # - name: laya-health
-  #   url: http://127.0.0.1:8000/health
-  #   timeout: 5
-  #   tags:
-  #     - service:laya
-  #     - app:local-decision-model
+  # Laya (port 8000). Runs on this machine as delivered; delete this block if you remove it.
+  - name: laya-health
+    url: http://127.0.0.1:8000/health
+    timeout: 5
+    tags:
+      - service:laya
+      - app:local-decision-model

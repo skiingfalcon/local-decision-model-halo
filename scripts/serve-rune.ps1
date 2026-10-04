@@ -35,7 +35,8 @@ $argv = @(
 )
 if ($env:RUNE_API_KEY) { $argv += @('--api-key', $env:RUNE_API_KEY) }
 # Prometheus-format /metrics (request, token and throughput counters) for Datadog's OpenMetrics
-# check. It sits behind the API key like every route except /health.
+# check. It sits behind the API key like every route except /health. Off by default: with
+# --metrics, b11382 Vulkan hit ErrorDeviceLost on the first requests on this machine (2026-10-04).
 if ($env:RUNE_METRICS -eq '1') { $argv += '--metrics' }
 $cmd = "`"$($server.FullName)`" $($argv -join ' ')"
 

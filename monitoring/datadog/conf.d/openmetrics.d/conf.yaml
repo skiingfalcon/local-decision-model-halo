@@ -1,5 +1,10 @@
+# DO NOT DEPLOY AS-IS. This check needs RUNE_METRICS=1, which is OFF: with llama-server's
+# --metrics on, Rune hit Vulkan ErrorDeviceLost (GPU fault, reboot to recover) on its first
+# requests on this machine (2026-10-04). Use the HTTP, process, performance-counter and log
+# checks instead. Kept for a future llama.cpp/driver where --metrics is verified safe.
+#
 # llama-server's Prometheus metrics for Rune: tokens processed, requests in flight / queued,
-# prompt throughput. Needs RUNE_METRICS=1 in the project's .env (the default).
+# prompt throughput.
 # /metrics sits behind the API key: put the same value as RUNE_API_KEY below (remove the
 # headers block if no key is set).
 # Copy to C:\ProgramData\Datadog\conf.d\openmetrics.d\conf.yaml, then restart the Agent.

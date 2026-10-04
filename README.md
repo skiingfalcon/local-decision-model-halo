@@ -105,6 +105,8 @@ The weights are `owao/surogate-rune-26b-a4b-systemone` at revision `f6cf5c19`. T
 
 `.env` picks the quant (`RUNE_GGUF`), the llama.cpp build (`RUNE_LLAMA_BACKEND`), the context (`RUNE_CTX`), the parallel slots (`RUNE_PARALLEL`) and the micro-batch (`RUNE_UBATCH`, default 512). Only the Vulkan build sees the 8060S: the official `win-rocm` zip lists no devices with this driver.
 
+**Keep `RUNE_METRICS=0`, the default.** With `RUNE_METRICS=1`, `llama-server --metrics` serves Prometheus `/metrics`. On 2026-10-04 every start with that flag hit `vk::Queue::submit: ErrorDeviceLost` on its first requests, even right after a reboot with nothing else on the GPU. The same build without it served 370 sequential requests with no errors, and also served alongside Laya with no errors.
+
 **Use Q8_0, the default.** `fetch-rune.ps1 BF16` will fetch BF16 (47 GB), and it loads, but every request fails with `vk::Queue::submit: ErrorDeviceLost` on b11382 Vulkan with driver 32.0.31041, even at `RUNE_UBATCH=128`. The device-lost state leaves the GPU in a bad state until a restart. Livesport's measurements put Q8_0 at 98.7% top-option agreement with bf16 (KL 0.0094).
 
 ## Request shape

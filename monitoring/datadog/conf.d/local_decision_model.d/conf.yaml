@@ -15,10 +15,10 @@ logs:
     tags:
       - app:local-decision-model
 
-  # Optional: Laya
-  # - type: file
-  #   path: C:\local-decision-model\state\logs\laya.log
-  #   service: laya
-  #   source: python
-  #   tags:
-  #     - app:local-decision-model
+  # Laya. "0xC0000005" here is the same GPU fault seen from the ROCm side; reboot.
+  - type: file
+    path: C:\local-decision-model\state\logs\laya.log
+    service: laya
+    source: python
+    tags:
+      - app:local-decision-model
