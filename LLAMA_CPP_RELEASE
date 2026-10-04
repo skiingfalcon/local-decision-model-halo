@@ -1,0 +1,4 @@
+b11382
+# llama.cpp release used for Rune's llama-server (prebuilt win-vulkan / win-rocm zips).
+# /v1/systemone (decision models, incl. the `openjev` type Rune's patched GGUF declares) landed in
+# PR #29818, merged 2026-10-02; b11371 is the first release with it.
